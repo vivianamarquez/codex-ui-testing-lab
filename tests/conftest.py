@@ -6,7 +6,7 @@ from threading import Thread
 import pytest
 from werkzeug.serving import make_server
 
-from airline_demo import create_app
+from app import create_app
 
 
 @pytest.fixture(scope="session")

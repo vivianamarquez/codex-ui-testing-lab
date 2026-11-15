@@ -1,125 +1,120 @@
-# UI testing with Codex
+# Test a UI with Codex
 
-Practice using Codex to test a UI against acceptance criteria, then turn the
-verified interactions into a reusable Python regression test.
+Give Codex acceptance criteria, let it use the browser, and review the evidence.
+Flight Lab is the small example app: search for a round trip, check the results,
+then edit the search.
 
-The example is Flight Lab, a local flight-search app built with Flask, Jinja,
-and plain CSS. A traveler configures a round trip, checks the results, and edits
-the search. The app uses synthetic flight data so each practice run is repeatable.
+## 1. Start the app
 
-## The Codex feature
-
-This workflow uses **Computer Use in the browser**. Codex can open the app,
-click controls, enter values, inspect the rendered page, and take screenshots.
-See [OpenAI's browser guide](https://learn.chatgpt.com/docs/browser#browser-use).
-
-Use the built-in browser in the desktop app, or refer to it with `@Browser` in
-your prompt. Codex also reads the repository and runs commands to write and
-execute the Python test. Browser observations and the saved test are two outputs
-you review separately.
-
-## Setup
-
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed:
-
-```sh
-curl -LsSf https://astral.sh/uv/install.sh | sh
-source "$HOME/.local/bin/env"
-```
-
-From the repository folder:
+With [uv installed](https://docs.astral.sh/uv/getting-started/installation/), run:
 
 ```sh
 uv sync --locked
-uv run playwright install chromium
+DEMO_TODAY=2030-01-15 uv run flask --app app run --port 5001
 ```
 
-uv manages Python 3.12 and the project's environment. Dependencies are listed
-in `pyproject.toml`; `uv.lock` records their versions.
+Open [Flight Lab](http://127.0.0.1:5001). The fixed date keeps our practice inputs
+valid. Leave the server running while you test; stop it with Ctrl-C.
 
-## Start the app
+## 2. Ask Codex to test it
 
-```sh
-DEMO_TODAY=2030-01-15 uv run flask --app airline_demo run --port 5001
-```
+Read the [three main acceptance criteria](docs/acceptance-criteria.md), then send:
 
-Open [Flight Lab](http://127.0.0.1:5001). Stop the server with Ctrl-C.
+> Use the built-in browser at http://127.0.0.1:5001 to verify AC-01, AC-02,
+> and AC-08 from docs/acceptance-criteria.md. Explicitly set ATL → JFK,
+> January 22–25, 2030, and 2 passengers. Submit, compare all five summary
+> values, then click Edit search and check all five form values.
+> Report each criterion as passed, failed, or blocked, with the observed values
+> and screenshots. Leave application code and tests unchanged.
 
-`DEMO_TODAY` sets the app's date to January 15, 2030, so the examples below stay
-valid whenever you practice. The form displays this date below the search controls.
-Omitting the setting uses today's UTC date.
+## 3. Review the evidence
 
-## Try a search
+Compare Codex's report with the screenshots. Are the route, dates, and passenger
+count correct on both pages? Repeat Edit search yourself. A useful report tells
+you what Codex actually observed and which checks it could not complete.
 
-| Example | Origin → destination | Departure | Return | Passengers | Expected |
-| --- | --- | --- | --- | --- | --- |
-| Main journey | Atlanta (ATL) → New York (JFK) | 2030-01-22 | 2030-01-25 | 2 | Two round-trip options |
-| Empty results | New York (JFK) → San Francisco (SFO) | 2030-01-22 | 2030-01-25 | 2 | “No flights found” |
+That's the core exercise: **criteria → browser interaction → evidence → review**.
 
-Submit the main search, compare all five values in the summary, then select
-**Edit search** and check that the form preserves them.
+<details>
+<summary><strong>What is Codex doing, and why does it take screenshots?</strong></summary>
 
-Synthetic flights cover the app's effective date through 180 days later.
-JFK–SFO has an empty schedule in both directions. All flight times are UTC.
-See [acceptance criteria](docs/acceptance-criteria.md) for the product rules.
+Codex uses **Computer Use in the browser** to open pages, click, type, and inspect
+the rendered result. You can request the built-in browser by name or with
+`@Browser`. [Official browser guide](https://learn.chatgpt.com/docs/browser?surface=app#browser-use).
 
-## Run tests
+The working loop is: observe the page, choose an action, perform it, and inspect
+what changed. In this exercise, Codex reads control labels and values and captures
+screenshots of the results and edited form. Screenshots help inspect appearance
+and give you visible evidence to review. They are snapshots of those states;
+checking the actual values connects that evidence to the acceptance criteria.
 
-```sh
-# All tests
-uv run pytest
+The criteria define what “correct” means. A screenshot alone does not decide
+whether the application met the requirement. Your review checks the conclusion.
 
-# Validation and server tests
-uv run pytest -m "not browser"
+</details>
 
-# Browser smoke test
-uv run pytest tests/e2e
+<details>
+<summary><strong>How does this compare with the alternatives?</strong></summary>
 
-# Watch the browser test
-uv run pytest tests/e2e --headed
+| Approach | Who does the work? | What you get |
+| --- | --- | --- |
+| Manual testing | An engineer or QA tester follows the journey and records findings. | Human exploration and judgment; someone repeats the work after changes. |
+| Scripted testing | An engineer writes and maintains a Playwright test. | Repeatable assertions that can run automatically. |
+| Codex browser testing | You supply criteria; Codex interacts with the app and reports evidence. | An assisted browser check that a person reviews. Codex can then help write a saved test. |
 
-# Keep screenshots and traces when a browser test fails
-uv run pytest tests/e2e --tracing retain-on-failure --screenshot only-on-failure
-```
+Manual testing can be done by your existing team; hiring testers is one staffing
+option, not a prerequisite. Codex can reduce repetitive interaction and test-writing
+work. People still define requirements, review evidence, and investigate issues.
+Compare time spent and defects caught on your own project to judge the benefit.
 
-Browser tests start and stop their own app server with the fixed demo date.
-To test the app you already started:
+</details>
 
-```sh
-uv run pytest tests/e2e --base-url http://127.0.0.1:5001
-```
+<details>
+<summary><strong>How do we reuse this and scale it up?</strong></summary>
 
-Screenshots and traces are saved under `test-results/`. Use `--tracing on` and
-`--screenshot on` to keep evidence from a successful run too. Open a trace with:
+1. **Save a stable journey as a test.** The Python test created in this session is
+   `tests/e2e/test_flight_search.py`. It checks the exact summary and edited values.
+   After reviewing its assertions, run it after UI changes:
 
-```sh
-uv run playwright show-trace test-results/<test-folder>/trace.zip
-```
+   ```sh
+   uv run playwright install chromium
+   uv run pytest tests/e2e/test_flight_search.py
+   ```
 
-Replace `<test-folder>` with the folder created by your run. See the
-[Playwright pytest guide](https://playwright.dev/python/docs/test-runners)
-for more test options.
+   Add `--headed` to watch it. The test starts and stops its own app server.
+   To use an existing fixed-date app, add `--base-url http://127.0.0.1:5001`.
+   Run `uv run pytest` for the full suite.
 
-## Practice the workflow
+2. **Add journeys one at a time.** Start with important flows, then validation
+   and empty results. Give each test clear criteria and repeatable input data.
 
-1. Read the [learner guide](docs/learner-guide.md) and manually try the main journey.
-2. Use the [exercise prompt](docs/exercise-prompt.md) to ask Codex to verify the UI.
-3. Review its observations with the [results template](docs/results-template.md).
-4. Ask Codex to create and run `tests/e2e/test_flight_search.py` for AC-01, AC-02,
-   and AC-08. Review the assertions and repeat the edit interaction yourself.
+3. **Run saved tests on pull requests.** A continuous integration (CI) job can
+   install dependencies and browsers, run the tests, and save failure evidence.
+   See the [Playwright CI guide](https://playwright.dev/python/docs/ci).
+   Keep screenshots and traces with:
 
-The repository includes validation tests, server tests, and a browser smoke test.
-You create the full search-and-edit browser test during the exercise.
+   ```sh
+   uv run pytest --tracing retain-on-failure --screenshot only-on-failure
+   ```
 
-## Repository map
+   Files appear in `test-results/`. Open a trace with
+   `uv run playwright show-trace <path-to-trace.zip>`.
 
-| Path | Purpose |
-| --- | --- |
-| `airline_demo/__init__.py` | Flask setup and effective date |
-| `airline_demo/search.py` | Search values and validation |
-| `airline_demo/fixtures.py` | Synthetic flight schedule |
-| `airline_demo/routes.py` | Form submissions and page rendering |
-| `airline_demo/templates/`, `airline_demo/static/` | HTML and CSS |
-| `tests/` | Baseline tests and browser setup |
-| `docs/` | Acceptance criteria, practice guide, and verification record |
-| `AGENTS.md` | Instructions for Codex |
+4. **Expand where it matters.** Add relevant browsers, screen sizes, and independent
+   parallel runs as coverage grows. Use Codex for new or changed journeys and for
+   investigating failures. Have people review confusing behavior, accessibility,
+   and whether the criteria still describe the product correctly.
+
+A saved Playwright test runs its written assertions; it does not need Codex to
+reason through every run. Codex browser exploration and automated regression tests
+complement each other.
+
+</details>
+
+## Files
+
+- `app.py` — Flask app, validation, and synthetic flights.
+- `templates/` and `static/` — pages and styling.
+- `docs/acceptance-criteria.md` — expected behavior.
+- `tests/e2e/test_flight_search.py` — the reusable browser journey.
+- Other files in `tests/` — checks for validation, rendering, and synthetic data.

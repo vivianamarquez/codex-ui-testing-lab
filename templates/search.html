@@ -14,7 +14,7 @@
     <ul>{% for field, message in errors.items() %}<li><a href="#{{ field }}">{{ message }}</a></li>{% endfor %}</ul>
   </div>
   {% endif %}
-  <form action="{{ url_for('flights.results') }}" method="get">
+  <form action="{{ url_for('results') }}" method="get">
     <div class="form-grid">
       {% for field, label in [('origin', 'Origin airport'), ('destination', 'Destination airport')] %}
       <div class="field airport-field">

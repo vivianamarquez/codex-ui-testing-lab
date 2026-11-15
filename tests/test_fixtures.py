@@ -2,8 +2,8 @@ from datetime import timedelta
 
 import pytest
 
-from airline_demo.fixtures import SCHEDULE_DAYS, flight_options
-from airline_demo.search import AIRPORTS, validate_search
+from app import SCHEDULE_DAYS, flight_options
+from app import AIRPORTS, validate_search
 
 
 @pytest.mark.parametrize("origin,destination", [

@@ -1,43 +1,26 @@
-# Working in this repository
+# UI testing with Codex
 
-This project teaches UI testing with Codex and reusable Python Playwright tests.
-The example app is a local flight search using deterministic synthetic data.
+Use this small flight-search app to practice testing against acceptance criteria.
 
-## Architecture and commands
-
-- Flask setup: `airline_demo/__init__.py`; page routes: `routes.py`.
-- Validation: `search.py`; synthetic schedule: `fixtures.py`.
-- UI: Jinja templates, standard HTML forms, and plain CSS.
-- Python 3.12, managed by uv. Setup: `uv sync --locked`, then
-  `uv run playwright install chromium`.
-- Run: `DEMO_TODAY=2030-01-15 uv run flask --app airline_demo run --port 5001`.
+- App: `app.py`; UI: `templates/` and `static/`.
+- Setup: `uv sync --locked`.
+- Run: `DEMO_TODAY=2030-01-15 uv run flask --app app run --port 5001`.
+- Browser runtime: `uv run playwright install chromium`.
 - All tests: `uv run pytest`.
-- Baseline: `uv run pytest -m "not browser"`.
-- Browser: `uv run pytest tests/e2e`; add `--headed` for a visible browser.
-- Evidence: add `--tracing retain-on-failure --screenshot only-on-failure`.
-- Browser tests start and stop a local server automatically. To use an existing
-  fixed-date server, add `--base-url http://127.0.0.1:5001`.
+- Browser journey: `uv run pytest tests/e2e/test_flight_search.py`.
+- Add `--headed` to watch, or `--tracing retain-on-failure --screenshot only-on-failure`
+  to retain failure evidence. Tests start and stop their own app server.
 
-## Testing workflow
+Read `docs/acceptance-criteria.md`; focus on AC-01, AC-02, and AC-08.
+Use the built-in browser for browser verification. Report passed, failed, blocked,
+and unattempted checks with exact observed values and supporting screenshots.
+Distinguish browser observations from HTTP checks and saved test results.
 
-Use `docs/acceptance-criteria.md` as the source of expected behavior. Start with
-AC-01, AC-02, and AC-08. Follow `docs/learner-guide.md` and `docs/exercise-prompt.md`.
+Keep changes focused and Python-first. During verification, leave application
+code unchanged unless asked to modify it. Preserve unrelated work. Report ambiguous
+requirements and genuine issues with reproduction steps. Keep assertions aligned
+with the criteria, fixtures deterministic, and tests independent of execution order.
+Use accessible labels/roles and waiting assertions. Keep all work local unless
+publishing or pushing is explicitly requested.
 
-Use Computer Use in the built-in browser to observe the UI. See the
-[official browser guide](https://learn.chatgpt.com/docs/browser#browser-use).
-Keep browser observations, HTTP checks, and saved regression tests distinct.
-Report passed, failed, blocked, and unattempted checks with supporting evidence.
-
-During the testing exercise, change tests and reports only; application changes
-require an explicit request. Preserve assertions that reflect the requirements.
-Report issues with reproduction steps, expected and actual behavior, and evidence.
-Identify ambiguous requirements before choosing a product rule.
-
-Keep changes focused, Python-first, and local. Preserve unrelated work. Use the
-shared effective date and deterministic fixtures. Prefer accessible roles and
-labels, exact user-visible values, and Playwright's waiting assertions. Keep tests
-independent of execution order. Distinguish a UI control preventing an invalid
-choice from the server rejecting an invalid request.
-
-The exercise creates `tests/e2e/test_flight_search.py`. Create it when the learner
-asks to move from browser verification to writing the regression test.
+See README.md for the exercise, browser explanation, and how to expand coverage.

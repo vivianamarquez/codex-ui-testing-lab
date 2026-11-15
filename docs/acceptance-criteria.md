@@ -1,79 +1,50 @@
-# Flight-search acceptance criteria
+# Acceptance criteria
 
-These requirements define expected behavior for the flight-search example.
-Start with **AC-01, AC-02, and AC-08**. Use the remaining criteria for follow-up
-practice.
+Practice these three checks with **ATL → JFK, January 22–25, 2030, 2 passengers**.
+Start the app with `DEMO_TODAY=2030-01-15`.
 
-| ID | Requirement | Expected behavior |
-| --- | --- | --- |
-| AC-01 | Valid round-trip search | Given supported, different airports, valid dates, and 1–9 passengers, submitting opens the results page. A valid search can have zero options. |
-| AC-02 | Search details remain accurate | The results summary shows exactly the submitted origin, destination, departure date, return date, and passenger count. Both cities and airport codes are shown. |
-| AC-03 | Different airports are required | A search with the same origin and destination is rejected with a destination error. |
-| AC-04 | Date ordering is enforced | A return before departure is rejected. A same-day return is allowed. |
-| AC-05 | Departure date is not in the past | A departure before the application's effective today is rejected. Departure today is allowed. |
-| AC-06 | Passenger limits are enforced | Only integer passenger choices 1–9 are accepted. Missing, out-of-range, and non-integer values are rejected. |
-| AC-07 | Invalid input is recoverable | Feedback explains each invalid field. Valid values already entered are retained, so the traveler can correct and resubmit. |
-| AC-08 | Editing a search preserves values | “Edit search” returns a form containing the submitted airports, both dates, and passenger count. |
-| AC-09 | Empty results are understandable | A valid search with no scheduled options shows “No flights found,” the search summary, and “Edit search.” It is not a validation error. |
+| ID | Expected behavior |
+| --- | --- |
+| **AC-01** | A valid round-trip search opens the results page. |
+| **AC-02** | The summary shows the exact origin, destination, departure date, return date, and passenger count submitted. |
+| **AC-08** | Edit search returns a form containing those same five values. |
 
-## Exact input and feedback contract
+For each check, report **passed, failed, or blocked**, what you observed, and the
+evidence. A successful sample shows two round-trip options. Check the values on
+the page, then compare the edited controls with your original input.
 
-- Supported airports: Atlanta (ATL), New York (JFK), Los Angeles (LAX),
-  San Francisco (SFO). The form supports round-trip searches.
-- All five fields are required. Dates sent to the server use `YYYY-MM-DD`;
-  impossible dates are rejected. The browser's native date display can vary by
-  locale; the results summary always displays ISO dates unambiguously.
-- Passenger values are the canonical strings `1` through `9` on submission.
-  Values such as `1.0`, `01`, `+1`, and whitespace are invalid requests.
-- Valid `GET /results?...` requests return HTTP 200. Server-side invalid requests
-  return HTTP **422** and render the populated search form, an error summary with
-  field links, and associated inline messages.
-- Native `required` and date `min` constraints can stop submission before the
-  server is reached. Selects offer only supported airports and 1–9 passengers
-  on the initial form. They do **not** disable choosing identical airports.
-- Both date inputs have `min=effective today`. A return before departure but
-  after today can be submitted; the **server** rejects it with an explanation.
-- On server errors, all valid inputs are preserved. Invalid airport/passenger
-  query values are displayed as marked invalid options. An impossible or malformed
-  date may appear blank in the native date control; other valid values remain.
-- Edit uses the submitted values in query parameters. A manually forged edit URL
-  is not accepted as a valid search until submission passes server validation.
+## Follow-up checks
 
-**Evidence distinction:** an inability to select 10 passengers demonstrates a UI
-constraint, not server enforcement. To verify rejection of forged values, use a
-direct HTTP request or the baseline HTTP tests. Native validation messages belong
-to the browser and may vary by locale; do not assert their exact wording.
+| ID | Expected behavior |
+| --- | --- |
+| AC-03 | Identical origin and destination airports are rejected. |
+| AC-04 | A return before departure is rejected; a same-day return is allowed. |
+| AC-05 | Departure before the effective date is rejected; departure today is allowed. |
+| AC-06 | Only passenger counts 1–9 are accepted. |
+| AC-07 | Errors explain the problem and preserve valid inputs for correction. |
+| AC-09 | A valid search with an empty schedule shows “No flights found,” the accurate summary, and Edit search. |
 
-## Effective date and schedule contract
+## Input and data rules
 
-`DEMO_TODAY=2030-01-15` freezes the application date for practice. With no setting,
-use the UTC calendar date, independent of the machine's timezone. The date is
-computed once per request and shared by validation, rendered minimums/defaults,
-and synthetic schedule generation. Fixed tests use the same date explicitly.
+- All five fields are required. Airports: ATL, JFK, LAX, SFO.
+- Submitted dates use `YYYY-MM-DD`; results display that same format. Native
+  date controls may display dates in the browser's local format.
+- Passenger values are `1` through `9`; malformed values such as `1.0` are rejected.
+- The server validates submissions: valid searches return HTTP 200; invalid ones
+  return HTTP 422 with a populated form and field errors. Malformed date values
+  may appear blank in a native date control; other valid values remain available.
+- Native controls can prevent missing values and dates before today. Both date
+  fields have today's minimum; the server checks return-versus-departure ordering
+  and rejects identical airports. Test server rejection separately from a control
+  preventing a selection.
+- The effective date is `DEMO_TODAY`, or the UTC date when unset. Validation, form
+  defaults, minimum dates, and schedules all use that date.
+- Synthetic flights cover today through today +180 days, inclusive. Dates outside
+  that window are valid searches with empty results. Passenger count preserves
+  the requested party size and does not change synthetic availability.
+- All distinct supported routes have two options within the schedule window,
+  except JFK–SFO in both directions, which has an empty schedule.
+- Each option's outbound and return legs match the requested route and dates.
+  Times are UTC; a same-day return departs after the outbound arrival.
 
-Flights are available through today +180 days **inclusive**. Both travel dates
-must be in that schedule window
-to produce options. Outside the window, the search remains valid and returns none.
-JFK–SFO in either direction always returns none. Every other distinct supported
-pair produces two deterministic options, independent of passenger count 1–9.
-
-Each option contains outbound origin → destination and return destination → origin
-legs on the requested dates. All times are UTC, and even a same-day inbound leg
-departs after the outbound arrival. Flight identifiers are synthetic, with a
-`DEMO-` prefix. The same inputs and effective date produce the same options.
-
-## Practice inputs
-
-With `DEMO_TODAY=2030-01-15`:
-
-- Main: ATL → JFK; departure `2030-01-22`; return `2030-01-25`; **2 passengers**.
-  Expect two round-trip options and all five values preserved on edit.
-- Empty: JFK → SFO, with the same dates and passengers. Expect no flights and
-  the accurate summary/edit action.
-- Same-day boundary: ATL → JFK; both dates `2030-01-15`; 1 or 9 passengers.
-  Expect acceptance and two options.
-- Recoverable validation: ATL → ATL, otherwise main inputs. Expect a destination
-  error; correct to JFK without re-entering the valid dates or passengers.
-
-In live-date mode, derive travel dates from the displayed effective today rather
-than reusing the fixed examples without the fixed-date setting.
+For empty-results practice, use **JFK → SFO** with the same dates and 2 passengers.

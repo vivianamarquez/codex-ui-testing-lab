@@ -2,8 +2,8 @@ from datetime import date
 
 import pytest
 
-from airline_demo import create_app, effective_today
-from airline_demo.search import validate_search
+from app import create_app, effective_today
+from app import validate_search
 
 
 @pytest.mark.parametrize("overrides,field", [
@@ -65,5 +65,5 @@ def test_default_clock_is_explicitly_utc(monkeypatch):
             return datetime(2040, 2, 29, tzinfo=tz)
 
     monkeypatch.delenv("DEMO_TODAY", raising=False)
-    monkeypatch.setattr("airline_demo.datetime", Clock)
+    monkeypatch.setattr("app.datetime", Clock)
     assert effective_today(create_app()) == date(2040, 2, 29)

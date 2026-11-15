@@ -13,3 +13,9 @@ dev = [
 
 [tool.uv]
 package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+markers = ["browser: tests that require a Playwright browser runtime"]
