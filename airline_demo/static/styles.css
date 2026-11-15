@@ -1,0 +1,517 @@
+/* Layout, controls, and responsive styles; no build step. */
+:root {
+  color-scheme: light;
+  --ink: #183b40;
+  --muted: #52686b;
+  --teal: #12655e;
+  --line: #d7e2dd;
+  --paper: #fff;
+  --bg: #f3f6f2;
+  --error: #9e3030;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.wrap {
+  width: min(1060px,calc(100% - 64px));
+  margin-inline: auto;
+}
+
+a {
+  color: var(--teal);
+  text-underline-offset: 4px;
+}
+
+a:hover {
+  color: #093e39;
+}
+
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible {
+  outline: 3px solid #bc671e;
+  outline-offset: 4px;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100px;
+  border-bottom: 1px solid var(--line);
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-size: 21px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  background: var(--teal);
+  color: white;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 26px;
+}
+
+.demo-badge {
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  border-radius: 99px;
+}
+
+.intro {
+  padding: 53px 0 32px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 750;
+  color: var(--teal);
+  margin: 0 0 10px;
+}
+
+h1 {
+  font-size: clamp(32px,4.3vw,48px);
+  line-height: 1.13;
+  letter-spacing: -.04em;
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+.lead {
+  font-size: 17px;
+  color: var(--muted);
+  margin: 0;
+  max-width: 680px;
+}
+
+h2 {
+  font-size: 20px;
+  line-height: 1.3;
+  margin: 0;
+}
+
+h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 6px 22px #183b4005;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.pill {
+  background: #edf4ee;
+  color: var(--teal);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(6,minmax(0,1fr));
+  gap: 24px 20px;
+}
+
+.field {
+  grid-column: span 2;
+  min-width: 0;
+}
+
+.airport-field {
+  grid-column: span 3;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+input,select {
+  font: inherit;
+  min-width: 0;
+  width: 100%;
+  height: 52px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #95aaa5;
+  border-radius: 7px;
+  padding: 0 12px;
+}
+
+select {
+  padding-right: 28px;
+}
+
+input[aria-invalid],select[aria-invalid] {
+  border: 2px solid var(--error);
+}
+
+.form-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+  margin-top: 28px;
+}
+
+.form-bottom p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+button,.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--teal);
+  color: white;
+  padding: 14px 23px;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover,.button:hover {
+  background: #0b4d47;
+  color: white;
+}
+
+.demo-note {
+  display: flex;
+  gap: 16px;
+  margin: 29px 0 44px;
+  padding: 0 4px;
+  color: var(--muted);
+}
+
+.demo-note h2 {
+  font-size: 15px;
+  color: var(--ink);
+  margin: 0 0 5px;
+}
+
+.demo-note p {
+  font-size: 13px;
+  margin: 0 0 8px;
+  max-width: 810px;
+}
+
+.note-icon {
+  flex-shrink: 0;
+  width: 23px;
+  height: 23px;
+  border: 1px solid #79938b;
+  border-radius: 50%;
+  text-align: center;
+  font: italic 16px Georgia;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding-block: 23px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.error-summary {
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  background: #fff2ee;
+  border-left: 4px solid var(--error);
+  border-radius: 6px;
+  color: var(--error);
+}
+
+.error-summary h3 {
+  font-size: 16px;
+}
+
+.error-summary ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.error-summary a {
+  color: var(--error);
+}
+
+.field-error {
+  color: var(--error);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr 1fr .7fr;
+  gap: 20px;
+  margin: 0;
+}
+
+.summary-grid dt {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.summary-grid dd {
+  margin: 0;
+  font-weight: 650;
+  font-size: 15px;
+}
+
+.edit-link {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.options {
+  margin: 34px 0 44px;
+}
+
+.options-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+
+.options-heading span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.flight-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 28px;
+  margin-bottom: 16px;
+}
+
+.flight-card h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--teal);
+  margin-bottom: 18px;
+}
+
+.flight-leg {
+  display: grid;
+  grid-template-columns: .8fr 1fr 1fr 1fr;
+  align-items: center;
+  gap: 20px;
+}
+
+.flight-leg+.flight-leg {
+  border-top: 1px solid var(--line);
+  margin-top: 17px;
+  padding-top: 17px;
+}
+
+.flight-leg span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.leg-label strong {
+  font-size: 13px;
+}
+
+.leg-end strong {
+  font-size: 19px;
+}
+
+.leg-end time {
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.flight-line {
+  text-align: center;
+  color: #79938b;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 42px 26px;
+}
+
+.empty-state p {
+  color: var(--muted);
+  max-width: 600px;
+  margin: 12px auto;
+}
+
+.empty-state .button {
+  margin-top: 16px;
+}
+
+.empty-icon {
+  display: block;
+  font-size: 36px;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+
+.sr-only,.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+
+.skip-link:focus {
+  position: absolute;
+  z-index: 10;
+  top: 10px;
+  left: 10px;
+  padding: 12px;
+  background: white;
+}
+
+@media(max-width:760px) {
+  .wrap {
+    width: calc(100% - 36px);
+  }
+  .site-header {
+    min-height: 80px;
+  }
+  .intro {
+    padding-top: 36px;
+  }
+  .panel {
+    padding: 22px;
+  }
+  .summary-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+  .options-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .flight-leg {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .leg-label {
+    grid-column: 1/-1;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .flight-line {
+    display: none;
+  }
+  .flight-card {
+    padding: 20px;
+  }
+  .site-footer {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+@media(max-width:480px) {
+  .field,.airport-field {
+    grid-column: 1/-1;
+  }
+  .form-grid {
+    gap: 19px;
+  }
+  .form-bottom {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .brand {
+    font-size: 18px;
+  }
+  .demo-badge {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+  .panel-heading {
+    margin-bottom: 22px;
+  }
+  .summary-grid {
+    gap: 20px 12px;
+  }
+  .summary-grid dd {
+    font-size: 14px;
+  }
+  .leg-end strong {
+    font-size: 17px;
+  }
+  .lead {
+    font-size: 16px;
+  }
+  .demo-note {
+    margin-top: 25px;
+  }
+  .site-footer {
+    font-size: 11px;
+  }
+}

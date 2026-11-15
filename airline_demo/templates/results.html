@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Your flight results{% endblock %}
+{% block content %}
+<section class="intro results-intro">
+  <p class="eyebrow">Your next change of scene</p>
+  <h1>Your flight results</h1>
+  <p class="lead">{{ airports[trip.origin] }} <span aria-hidden="true">↔</span><span class="sr-only">to</span> {{ airports[trip.destination] }}. A round trip, made simple.</p>
+</section>
+<section class="panel summary" aria-labelledby="summary-heading">
+  <div class="panel-heading"><h2 id="summary-heading">Search summary</h2><a class="edit-link" href="{{ edit_url }}">Edit search <span aria-hidden="true">↗</span></a></div>
+  <dl class="summary-grid">
+    <div><dt>Origin airport</dt><dd>{{ airports[trip.origin] }} ({{ trip.origin }})</dd></div>
+    <div><dt>Destination airport</dt><dd>{{ airports[trip.destination] }} ({{ trip.destination }})</dd></div>
+    <div><dt>Departure date</dt><dd><time datetime="{{ trip.departure }}">{{ trip.departure }}</time></dd></div>
+    <div><dt>Return date</dt><dd><time datetime="{{ trip.return_date }}">{{ trip.return_date }}</time></dd></div>
+    <div><dt>Passengers</dt><dd>{{ trip.passengers }}</dd></div>
+  </dl>
+</section>
+<section class="options" aria-labelledby="options-heading">
+  {% if options %}
+  <div class="options-heading"><h2 id="options-heading">{{ options|length }} round-trip options</h2><span>All times UTC · Synthetic schedule</span></div>
+  {% for option in options %}
+  <article class="flight-card" aria-labelledby="option-{{ loop.index }}">
+    <h3 id="option-{{ loop.index }}">Option {{ loop.index }}</h3>
+    {% for label, leg in [('Outbound', option.outbound), ('Return', option.inbound)] %}
+    <div class="flight-leg">
+      <div class="leg-label"><strong>{{ label }}</strong><span>{{ leg.identifier }}</span></div>
+      <div class="leg-end"><strong>{{ leg.origin }} <time datetime="{{ leg.departure.isoformat() }}">{{ leg.departure.strftime('%H:%M') }}</time></strong><span>{{ leg.departure.date() }}</span></div>
+      <div class="flight-line" aria-hidden="true"><span>Nonstop</span><div>────────→</div></div>
+      <div class="leg-end"><strong>{{ leg.destination }} <time datetime="{{ leg.arrival.isoformat() }}">{{ leg.arrival.strftime('%H:%M') }}</time></strong><span>{{ leg.arrival.date() }}</span></div>
+    </div>
+    {% endfor %}
+  </article>
+  {% endfor %}
+  {% else %}
+  <div class="panel empty-state">
+    <span class="empty-icon" aria-hidden="true">↗</span>
+    <h2 id="options-heading">No flights found</h2>
+    <p>There are no synthetic flight options for this route and these dates.</p>
+    <p>Try another route or dates between {{ today }} and {{ schedule_end }}.
+       New York ↔ San Francisco has no scheduled options.</p>
+    <a class="button" href="{{ edit_url }}">Change search details</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
