@@ -1,4 +1,4 @@
-"""A deterministic synthetic schedule, with no inventory lookup or randomness."""
+"""Repeatable synthetic flight schedules."""
 
 from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta, timezone
@@ -6,7 +6,7 @@ from datetime import date, datetime, time, timedelta, timezone
 from .search import Search
 
 SCHEDULE_DAYS = 180
-# Route duration in hours, not a claim about real-world schedules.
+# Synthetic route durations in hours.
 ROUTE_HOURS = {
     frozenset(("ATL", "JFK")): 2,
     frozenset(("ATL", "LAX")): 5,
@@ -34,7 +34,7 @@ class FlightOption:
 def flight_options(search: Search, today: date):
     """Two round trips for scheduled routes inside today's inclusive window.
 
-    JFK–SFO (either direction) deliberately has no scheduled service.
+    JFK–SFO has an empty schedule in both directions.
     All times use UTC. Even a same-day return departs after outbound arrival.
     """
     duration = ROUTE_HOURS.get(frozenset((search.origin, search.destination)))

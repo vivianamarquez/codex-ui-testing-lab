@@ -1,4 +1,0 @@
-# Human-maintained dependency ranges. Install the fully pinned requirements.txt.
-Flask>=3.1,<4
-pytest>=8,<10
-pytest-playwright>=0.7,<1

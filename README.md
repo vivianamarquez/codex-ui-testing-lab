@@ -1,152 +1,125 @@
-# codex-airline-ui-testing
-A local airline-search demo for practicing Codex browser verification and reusable Python Playwright tests.
+# UI testing with Codex
 
-The recurring task: **verify a flight-search journey against acceptance criteria
-in a browser, then turn the verified interactions into a reusable Python regression
-test.** A passing journey is a useful outcome; this exercise contains no planted bug.
+Practice using Codex to test a UI against acceptance criteria, then turn the
+verified interactions into a reusable Python regression test.
 
-Flight Lab is a small Flask application with Jinja templates, plain CSS, standard
-HTML forms, and deterministic synthetic flights. There is no JavaScript, frontend
-build step, database, authentication, external inventory, or paid service. The
-journey ends at results: no bookings, payments, identity collection, or accounts.
+The example is Flight Lab, a local flight-search app built with Flask, Jinja,
+and plain CSS. A traveler configures a round trip, checks the results, and edits
+the search. The app uses synthetic flight data so each practice run is repeatable.
+
+## The Codex feature
+
+This workflow uses **Computer Use in the browser**. Codex can open the app,
+click controls, enter values, inspect the rendered page, and take screenshots.
+See [OpenAI's browser guide](https://learn.chatgpt.com/docs/browser#browser-use).
+
+Use the built-in browser in the desktop app, or refer to it with `@Browser` in
+your prompt. Codex also reads the repository and runs commands to write and
+execute the Python test. Browser observations and the saved test are two outputs
+you review separately.
 
 ## Setup
 
-Prerequisites: Python **3.12**, a terminal, and internet access for the initial
-package/browser download. Python 3.12 is a
-[supported Python series](https://devguide.python.org/versions/); this checkout was
-verified with **CPython 3.12.9 on macOS arm64**. Use a current 3.12 patch release for
-a new installation. A browser runtime is installed separately from its Python package.
-
-From the repository root, on macOS/Linux:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed:
 
 ```sh
-python3.12 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m playwright install chromium
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source "$HOME/.local/bin/env"
 ```
 
-On Windows PowerShell, replace the first two commands with
-`py -3.12 -m venv .venv` and `.venv\Scripts\Activate.ps1`.
-If activation is disabled, invoke `.venv\Scripts\python.exe` directly.
-Linux hosts missing browser system libraries can use
-`python -m playwright install --with-deps chromium` (system installation may need
-administrator access).
-
-`requirements.txt` pins direct and transitive dependencies from the verified
-environment. `requirements.in` records the small set of intentional direct
-dependencies. Install the pinned file for rehearsals; update pins deliberately
-in a clean virtual environment and rerun the checks.
-
-## Run locally
-
-With the virtual environment activated:
+From the repository folder:
 
 ```sh
-DEMO_TODAY=2030-01-15 python -m flask --app airline_demo run --port 5000
+uv sync --locked
+uv run playwright install chromium
 ```
 
-Open [Flight Lab locally](http://127.0.0.1:5000). Stop it with Ctrl-C.
-PowerShell: set `$env:DEMO_TODAY = "2030-01-15"` first, then run the Flask command.
-If port 5000 is occupied, use `--port 5001` and that URL throughout the exercise.
-This is Flask's local development server, not a production deployment.
+uv manages Python 3.12 and the project's environment. Dependencies are listed
+in `pyproject.toml`; `uv.lock` records their versions.
 
-Without `DEMO_TODAY`, the app uses the **UTC calendar date**, never the machine's
-local timezone. The form defaults to departure +7 days and return +10 days.
-The effective date appears below the form. A malformed `DEMO_TODAY` fails clearly
-at startup; it does not silently fall back to the clock.
+## Start the app
 
-## Deterministic rehearsal examples
+```sh
+DEMO_TODAY=2030-01-15 uv run flask --app airline_demo run --port 5001
+```
 
-Keep `DEMO_TODAY=2030-01-15` set for these examples, even after 2030. Fixed mode
-intentionally ignores the real clock. The tests use this same date.
+Open [Flight Lab](http://127.0.0.1:5001). Stop the server with Ctrl-C.
+
+`DEMO_TODAY` sets the app's date to January 15, 2030, so the examples below stay
+valid whenever you practice. The form displays this date below the search controls.
+Omitting the setting uses today's UTC date.
+
+## Try a search
 
 | Example | Origin → destination | Departure | Return | Passengers | Expected |
 | --- | --- | --- | --- | --- | --- |
-| Main practice | Atlanta (ATL) → New York (JFK) | 2030-01-22 | 2030-01-25 | 2 | Two round-trip options |
-| Empty results | New York (JFK) → San Francisco (SFO) | 2030-01-22 | 2030-01-25 | 2 | Explicit no-results state |
+| Main journey | Atlanta (ATL) → New York (JFK) | 2030-01-22 | 2030-01-25 | 2 | Two round-trip options |
+| Empty results | New York (JFK) → San Francisco (SFO) | 2030-01-22 | 2030-01-25 | 2 | “No flights found” |
 
-All distinct airport pairs except JFK–SFO in either direction have two options
-when **both** dates fall within effective today through today +180 days, inclusive.
-Dates beyond that window are valid searches with no results. All times are explicitly
-UTC; each option has an outbound and reversed return leg on the requested dates.
-Passenger count is preserved but does not change synthetic availability. There
-are no prices or real seat inventory. See the
-[complete product rules](docs/acceptance-criteria.md).
+Submit the main search, compare all five values in the summary, then select
+**Edit search** and check that the form preserves them.
+
+Synthetic flights cover the app's effective date through 180 days later.
+JFK–SFO has an empty schedule in both directions. All flight times are UTC.
+See [acceptance criteria](docs/acceptance-criteria.md) for the product rules.
 
 ## Run tests
 
 ```sh
-# Core validation, HTTP/template behavior, and deterministic schedule
-python -m pytest -m "not browser"
+# All tests
+uv run pytest
 
-# Browser infrastructure smoke test (automatic local server)
-python -m pytest tests/e2e --browser chromium
+# Validation and server tests
+uv run pytest -m "not browser"
 
-# Everything currently in the starter
-python -m pytest
+# Browser smoke test
+uv run pytest tests/e2e
 
-# Watch the smoke test in a visible Chromium window
-python -m pytest tests/e2e --browser chromium --headed
+# Watch the browser test
+uv run pytest tests/e2e --headed
 
-# Save evidence only when a browser test fails
-python -m pytest tests/e2e --tracing retain-on-failure --screenshot only-on-failure
-
-# Optionally retain evidence even for successful runs
-python -m pytest tests/e2e --tracing on --screenshot on
+# Keep screenshots and traces when a browser test fails
+uv run pytest tests/e2e --tracing retain-on-failure --screenshot only-on-failure
 ```
 
-Artifacts go under `test-results/` (ignored by Git). Open the actual trace path
-from the output with `python -m playwright show-trace test-results/<test-folder>/trace.zip`.
-The options are documented by the
-[Python Playwright pytest plugin](https://playwright.dev/python/docs/test-runners).
-
-The `base_url` fixture in `tests/conftest.py` creates a fixed-date app, listens on
-an available loopback port, and stops the server after browser tests. No separate
-server or arbitrary readiness sleep is needed. Each browser test gets a fresh
-browser context from the plugin. Use the supplied `page` fixture so the plugin
-can capture failure evidence.
-
-To use an app you already started, run:
+Browser tests start and stop their own app server with the fixed demo date.
+To test the app you already started:
 
 ```sh
-python -m pytest tests/e2e --base-url http://127.0.0.1:5000
+uv run pytest tests/e2e --base-url http://127.0.0.1:5001
 ```
 
-You own starting/stopping that external server. For the future fixed-date journey
-test, it **must** use `DEMO_TODAY=2030-01-15`. Unit/HTTP tests always use their
-own isolated fixed-date app, regardless of this URL or your shell's date setting.
+Screenshots and traces are saved under `test-results/`. Use `--tracing on` and
+`--screenshot on` to keep evidence from a successful run too. Open a trace with:
 
-## Begin practicing
+```sh
+uv run playwright show-trace test-results/<test-folder>/trace.zip
+```
 
-1. Read [the acceptance criteria](docs/acceptance-criteria.md) and
-   [learner guide](docs/learner-guide.md).
-2. Start fixed-date mode and manually try the main example once.
-3. Start a separate Codex practice session in this repository and paste
-   [the exercise prompt](docs/exercise-prompt.md).
-4. Review browser observations, the generated test, and its actual execution.
-   Use [the blank results template](docs/results-template.md); repeat an important
-   interaction yourself before accepting the work.
+Replace `<test-folder>` with the folder created by your run. See the
+[Playwright pytest guide](https://playwright.dev/python/docs/test-runners)
+for more test options.
 
-**Prepared:** application, deterministic fixtures, server tests, browser runtime
-setup, browser smoke test, and learning materials.
-**Your exercise:** browser verification of AC-01/02/08 and creation of
-`tests/e2e/test_flight_search.py`, which does not exist in the starter.
-Browser exploration does not automatically produce a saved regression test.
+## Practice the workflow
 
-The implementation was separately checked while building the starter; see
-[implementation verification](docs/implementation-verification.md). That is not
-a prefilled learner report or a substitute for your practice session.
+1. Read the [learner guide](docs/learner-guide.md) and manually try the main journey.
+2. Use the [exercise prompt](docs/exercise-prompt.md) to ask Codex to verify the UI.
+3. Review its observations with the [results template](docs/results-template.md).
+4. Ask Codex to create and run `tests/e2e/test_flight_search.py` for AC-01, AC-02,
+   and AC-08. Review the assertions and repeat the edit interaction yourself.
 
-## Where to look
+The repository includes validation tests, server tests, and a browser smoke test.
+You create the full search-and-edit browser test during the exercise.
 
-| Path | Responsibility |
+## Repository map
+
+| Path | Purpose |
 | --- | --- |
 | `airline_demo/__init__.py` | Flask setup and effective date |
-| `airline_demo/search.py` | Typed search values and validation |
-| `airline_demo/fixtures.py` | Deterministic round-trip schedule |
-| `airline_demo/routes.py` | Read query parameters and render pages |
-| `airline_demo/templates/`, `static/` | Accessible HTML and responsive CSS |
-| `tests/` | Python baseline tests and browser infrastructure |
-| `docs/`, `AGENTS.md` | Expected behavior, exercise, and Codex instructions |
+| `airline_demo/search.py` | Search values and validation |
+| `airline_demo/fixtures.py` | Synthetic flight schedule |
+| `airline_demo/routes.py` | Form submissions and page rendering |
+| `airline_demo/templates/`, `airline_demo/static/` | HTML and CSS |
+| `tests/` | Baseline tests and browser setup |
+| `docs/` | Acceptance criteria, practice guide, and verification record |
+| `AGENTS.md` | Instructions for Codex |

@@ -1,100 +1,124 @@
-# Practice the workflow
+# Practice UI testing with Codex
 
-The developer problem is recurring: a search UI changed, and a reviewer needs
-evidence that the main journey still works. The deliverables are an observation
-report and a saved Python regression test. They are separate; browser interaction
-alone creates no reusable test file.
+Use Codex to check a UI against acceptance criteria and save the repeatable checks
+as a Python regression test. This guide uses a flight-search app as the example.
 
-## Before asking Codex to act
+The workflow produces two things: a report of what happened in the browser and a
+test you can run after future changes.
 
-Read `AGENTS.md`, the acceptance criteria, and the run commands. Inspect
-`search.py`, `routes.py`, the templates, and `tests/conftest.py` until you can
-explain where validation lives and how the test server starts. You need not learn
-a JavaScript framework: this app has none.
+## 1. Get familiar with the project
 
-Check the working tree with `git status --short` and note any existing changes.
-Install requirements and Chromium, then run the baseline tests once. The browser
-smoke test only confirms that a page and controls are reachable; it does not
-establish that searching, summarizing, or editing works.
+Read `AGENTS.md` and `docs/acceptance-criteria.md`. Focus on three checks:
 
-## Try it yourself first
+- **AC-01:** submitting a valid search opens results.
+- **AC-02:** the summary matches the submitted values.
+- **AC-08:** Edit search preserves those values.
 
-Start fixed-date mode using the README command. Confirm the form says effective
-today `2030-01-15`. Choose ATL → JFK, departure `2030-01-22`, return `2030-01-25`,
-and **2 passengers**. Tab through the labeled controls and activate Search flights.
-Compare every summary value against what you entered. Inspect one outbound and
-return leg for the correct route and dates. Select Edit search and confirm all
-five values, including 2 passengers, remain selected.
+In the Python code, `search.py` validates the input, `routes.py` renders the pages,
+and `tests/conftest.py` starts the app for browser tests. The templates contain the
+labeled controls and result summaries.
 
-Then use a different route or passenger count once, so you know what a default
-value accidentally replacing the submission would look like. Date controls can
-use your locale's display format; stored values/results use ISO dates.
-
-## Ask Codex to verify
-
-In a separate practice session, paste `exercise-prompt.md`. Start with AC-01,
-AC-02, and AC-08 only. Ask Codex to use actual clicks, typing, selection, and
-keyboard interaction and to inspect the rendered state. Source code inspection
-can explain behavior, but cannot establish that the browser journey succeeded.
-
-Expect explicit inputs, observations for each criterion, and passed/failed/blocked
-statuses. Supporting evidence could include the URL, selected form values,
-observed summary values, screenshot paths, and the exact test command/output.
-Evidence should identify the running app and effective date. A screenshot alone
-may not show hidden select values; a test passing alone may have weak assertions.
-
-Use `results-template.md` to review the report. “Everything works” or “the code
-looks correct” without observed values is insufficient. If browser access fails,
-mark browser checks blocked, record the cause, and keep HTTP results separate.
-If a real issue occurs, preserve reproduction steps and evidence; do not authorize
-unrequested app edits or accept weaker assertions just to obtain a green run.
-
-## Review the generated Python test
-
-The learner-created file should be `tests/e2e/test_flight_search.py`. Check that it:
-
-- Uses pytest, the supplied `page` and `base_url` fixtures, and a fresh browser
-  context; it can run alone without relying on the smoke test or test order.
-- Explicitly enters all five agreed values. At least passenger count should differ
-  from the form default. A second example with a different route is useful later.
-- Locates controls with `get_by_label` and actions/headings with `get_by_role`.
-  If a results value needs an anchor, use the semantic summary region and its
-  labels, avoiding styling classes and positional CSS selectors.
-- Asserts the results page and the exact five summary values in their visible
-  context, then clicks Edit search and asserts all five control values.
-- Uses Playwright `expect(...)` assertions that wait for UI state. It has no
-  arbitrary sleeps, broad exception handling, or dependence on today's real date.
-- Uses `@pytest.mark.browser` so `-m "not browser"` remains accurate.
-- Leaves application code unchanged and is readable enough for you to maintain.
-
-Insufficient: asserting only that the URL contains `/results`, that “Flights”
-appears somewhere, that two cards exist, or that an input is visible after edit.
-Those assertions can pass while the route, dates, or passenger count are wrong.
-A count of options supplements exact summary checks; it does not replace them.
-
-Run the generated file alone, then the full suite. Collect a trace if needed:
+Check existing changes, set up the environment, and run the baseline:
 
 ```sh
-python -m pytest tests/e2e/test_flight_search.py --headed
-python -m pytest tests/e2e/test_flight_search.py --tracing on --screenshot on
-python -m pytest
-git diff -- airline_demo tests docs
+git status --short
+uv sync --locked
+uv run playwright install chromium
+uv run pytest
+```
+
+The browser smoke test checks that the search page and controls are available.
+The exercise adds coverage for submitting and editing a search.
+
+## 2. Start the app
+
+```sh
+DEMO_TODAY=2030-01-15 uv run flask --app airline_demo run --port 5001
+```
+
+Open [Flight Lab](http://127.0.0.1:5001). Confirm the form shows
+**Effective today: 2030-01-15**. Keep this terminal running while you practice.
+
+## 3. Try the main journey yourself
+
+Enter these values:
+
+| Field | Value |
+| --- | --- |
+| Origin airport | Atlanta (ATL) |
+| Destination airport | New York (JFK) |
+| Departure date | January 22, 2030 |
+| Return date | January 25, 2030 |
+| Passengers | 2 |
+
+Use Tab to move between controls and notice the focus outline. Activate
+**Search flights**. On the results page:
+
+1. Confirm there are two round-trip options.
+2. Compare all five summary values with your input.
+3. Inspect an option: the outbound leg should be ATL → JFK on January 22,
+   and the return should be JFK → ATL on January 25.
+4. Select **Edit search** and check all five form values, including 2 passengers.
+
+Repeat with a different route or passenger count. Changing the inputs helps you
+detect cases where the app might show default values instead of your choices.
+
+## 4. Ask Codex to verify the UI
+
+Use the [exercise prompt](exercise-prompt.md) in a separate practice session when
+you are ready for Codex to verify the journey and write the test.
+
+The browser capability is
+[Computer Use in the browser](https://learn.chatgpt.com/docs/browser#browser-use).
+Ask Codex to use the built-in browser, or mention `@Browser`, and provide the local
+URL. It can interact with controls and inspect the rendered result.
+
+Ask for observations against AC-01, AC-02, and AC-08. A useful report includes:
+
+- The app URL, effective date, and submitted values.
+- Expected and observed behavior for each criterion.
+- Passed, failed, or blocked status, with supporting evidence.
+- Screenshots or observed control values that support the findings.
+
+Use `results-template.md` to review the report. “Everything works” is too vague:
+look for specific values and actions. A screenshot may omit selected values, and
+a passing test can have weak assertions. Read the evidence alongside the claim.
+If a check is blocked, record the reason and what is needed to complete it.
+
+## 5. Review the generated Python test
+
+Ask Codex to create `tests/e2e/test_flight_search.py`. Review whether it:
+
+- Uses the supplied `page` and `base_url` fixtures and the `browser` marker.
+- Enters all five values, including a passenger count different from the default.
+- Finds controls by accessible labels and actions by roles.
+- Checks the exact five values in the results summary.
+- Clicks Edit search and checks the exact five control values again.
+- Uses Playwright assertions that wait for the expected state.
+- Runs independently with the fixed demo date.
+
+Assertions such as “the URL contains `/results`” or “the input is visible” are
+useful supporting checks. They need exact value assertions to establish that
+the app preserved the requested trip.
+
+Run the generated test in another terminal:
+
+```sh
+uv run pytest tests/e2e/test_flight_search.py --headed
+uv run pytest tests/e2e/test_flight_search.py --tracing on --screenshot on
+uv run pytest
+git diff -- tests docs
 git status --short
 ```
 
-`git diff` does not show the contents of untracked new files: open the generated
-test directly too. Read a trace locally with `python -m playwright show-trace`
-followed by its actual path. Manually repeat editing the search and confirm the
-passenger count survives. Human review includes both the code and the interaction.
+Open the new test directly too: `git diff` shows tracked file changes.
+Review a saved trace with `uv run playwright show-trace` followed by its path.
+Manually repeat Edit search and confirm the passenger count survives.
 
-## Reuse and keep the demonstration bounded
+## 6. Reuse the workflow
 
-Keep the reviewed test in the repository and rerun it after future UI changes.
-Follow-up exercises can cover validation recovery and empty results; pair browser
-constraints with server-level checks where needed. Do not expand the initial live
-demonstration to every criterion or to a reservation platform.
+Keep the reviewed test and rerun it after UI changes. Extend coverage to validation
+recovery and empty results as follow-up exercises.
 
-For a later ten-minute presentation, use one minute for the problem and criteria,
-three for browser verification, three for generating/running the test, two for
-human review, and one for reuse. Rehearse setup beforehand. This starter is the
-practice environment, not a completed presentation or a staged bug discovery.
+For another application, choose a small user journey, define its acceptance
+criteria, ask Codex to verify it in the browser, and review the resulting test.

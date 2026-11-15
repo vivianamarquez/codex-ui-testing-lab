@@ -1,4 +1,4 @@
-"""Application factory; no network services or persistence required."""
+"""Flask application setup and demo date."""
 
 import os
 from datetime import date, datetime, timezone
@@ -28,5 +28,5 @@ def create_app(test_config=None):
 
 
 def effective_today(app):
-    """Use an explicit rehearsal date, otherwise the UTC calendar date."""
+    """Use the configured demo date or the UTC calendar date."""
     return app.config["DEMO_TODAY"] or datetime.now(timezone.utc).date()

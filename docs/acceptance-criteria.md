@@ -1,8 +1,8 @@
 # Flight-search acceptance criteria
 
-These are the agreed product requirements. The initial journey is round-trip
-search only, ending at results. The primary live demonstration is **AC-01,
-AC-02, and AC-08**; the remaining criteria are bounded follow-up practice.
+These requirements define expected behavior for the flight-search example.
+Start with **AC-01, AC-02, and AC-08**. Use the remaining criteria for follow-up
+practice.
 
 | ID | Requirement | Expected behavior |
 | --- | --- | --- |
@@ -19,7 +19,7 @@ AC-02, and AC-08**; the remaining criteria are bounded follow-up practice.
 ## Exact input and feedback contract
 
 - Supported airports: Atlanta (ATL), New York (JFK), Los Angeles (LAX),
-  San Francisco (SFO). No free-text airport lookup or unsupported trip type.
+  San Francisco (SFO). The form supports round-trip searches.
 - All five fields are required. Dates sent to the server use `YYYY-MM-DD`;
   impossible dates are rejected. The browser's native date display can vary by
   locale; the results summary always displays ISO dates unambiguously.
@@ -27,12 +27,11 @@ AC-02, and AC-08**; the remaining criteria are bounded follow-up practice.
   Values such as `1.0`, `01`, `+1`, and whitespace are invalid requests.
 - Valid `GET /results?...` requests return HTTP 200. Server-side invalid requests
   return HTTP **422** and render the populated search form, an error summary with
-  field links, and associated inline messages. No session or database is used.
+  field links, and associated inline messages.
 - Native `required` and date `min` constraints can stop submission before the
   server is reached. Selects offer only supported airports and 1–9 passengers
   on the initial form. They do **not** disable choosing identical airports.
-- Both date inputs have `min=effective today`. There is no JavaScript to change
-  the return minimum when departure changes. A return before departure but
+- Both date inputs have `min=effective today`. A return before departure but
   after today can be submitted; the **server** rejects it with an explanation.
 - On server errors, all valid inputs are preserved. Invalid airport/passenger
   query values are displayed as marked invalid options. An impossible or malformed
@@ -47,13 +46,13 @@ to the browser and may vary by locale; do not assert their exact wording.
 
 ## Effective date and schedule contract
 
-`DEMO_TODAY=2030-01-15` freezes the application date for rehearsals. With no setting,
+`DEMO_TODAY=2030-01-15` freezes the application date for practice. With no setting,
 use the UTC calendar date, independent of the machine's timezone. The date is
 computed once per request and shared by validation, rendered minimums/defaults,
 and synthetic schedule generation. Fixed tests use the same date explicitly.
 
-Flights are available through today +180 days **inclusive**, with no booking
-horizon imposed by validation. Both travel dates must be in that schedule window
+Flights are available through today +180 days **inclusive**. Both travel dates
+must be in that schedule window
 to produce options. Outside the window, the search remains valid and returns none.
 JFK–SFO in either direction always returns none. Every other distinct supported
 pair produces two deterministic options, independent of passenger count 1–9.
@@ -61,9 +60,9 @@ pair produces two deterministic options, independent of passenger count 1–9.
 Each option contains outbound origin → destination and return destination → origin
 legs on the requested dates. All times are UTC, and even a same-day inbound leg
 departs after the outbound arrival. Flight identifiers are synthetic, with a
-`DEMO-` prefix. No live inventory, prices, randomness, or timezone conversion.
+`DEMO-` prefix. The same inputs and effective date produce the same options.
 
-## Rehearsal inputs
+## Practice inputs
 
 With `DEMO_TODAY=2030-01-15`:
 

@@ -1,6 +1,6 @@
 # Browser verification report
 
-Copy this template for a practice session. It intentionally contains no results.
+Record your observations and test results during a practice session.
 
 - Date/time:
 - Repository revision / uncommitted changes:
