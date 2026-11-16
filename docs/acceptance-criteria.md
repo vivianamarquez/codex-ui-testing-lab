@@ -1,7 +1,9 @@
 # Acceptance criteria
 
 Practice these three checks with **ATL → JFK, January 22–25, 2030, 2 passengers**.
-Start the app with `DEMO_TODAY=2030-01-15`.
+Open the [hosted demo](https://flight-lab-ui-workshop.vivianamarquez.chatgpt.site).
+Its effective date is fixed at January 15, 2030. The
+[student prompt](browser-prompt.md) includes these criteria, ready to paste into Codex.
 
 | ID | Expected behavior |
 | --- | --- |
@@ -30,15 +32,13 @@ the page, then compare the edited controls with your original input.
 - Submitted dates use `YYYY-MM-DD`; results display that same format. Native
   date controls may display dates in the browser's local format.
 - Passenger values are `1` through `9`; malformed values such as `1.0` are rejected.
-- The server validates submissions: valid searches return HTTP 200; invalid ones
-  return HTTP 422 with a populated form and field errors. Malformed date values
+- Invalid searches show a populated form and field errors. Malformed date values
   may appear blank in a native date control; other valid values remain available.
 - Native controls can prevent missing values and dates before today. Both date
-  fields have today's minimum; the server checks return-versus-departure ordering
-  and rejects identical airports. Test server rejection separately from a control
-  preventing a selection.
-- The effective date is `DEMO_TODAY`, or the UTC date when unset. Validation, form
-  defaults, minimum dates, and schedules all use that date.
+  fields have today's minimum; the app also checks return-versus-departure ordering
+  and rejects identical airports. Distinguish a field preventing a selection from
+  an error shown after submission.
+- Validation, form defaults, minimum dates, and schedules use the effective date.
 - Synthetic flights cover today through today +180 days, inclusive. Dates outside
   that window are valid searches with empty results. Passenger count preserves
   the requested party size and does not change synthetic availability.
@@ -48,3 +48,10 @@ the page, then compare the edited controls with your original input.
   Times are UTC; a same-day return departs after the outbound arrival.
 
 For empty-results practice, use **JFK → SFO** with the same dates and 2 passengers.
+
+## Local Flask implementation
+
+The original local app uses `DEMO_TODAY`, or the UTC date when unset. Start it with
+`DEMO_TODAY=2030-01-15` for these inputs. It validates on the server: valid searches
+return HTTP 200 and invalid searches return HTTP 422. The hosted exercise performs
+validation in the browser; HTTP status checks apply to the local implementation.

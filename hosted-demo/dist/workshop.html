@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UI testing with Codex</title><link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/footer.css">
+</head>
+<body class="workshop">
+<main class="wrap workshop-main"><section class="intro"><h1>UI testing with Codex</h1><p class="lead">Check UI journeys with less manual effort. Use Codex to test against acceptance criteria, review the evidence, and turn a verified journey into a reusable test.</p></section>
+<section class="panel"><h2>1. Get ready</h2><ol><li>Open the Codex app and sign in with your work account.</li><li>Start a chat. Ask Codex to use the built-in browser to open <a href="/">Flight Lab</a>.</li><li>Review browser access prompts for this demo. If your workspace blocks the feature, ask your facilitator or administrator.</li><li>Confirm the search form is visible before continuing.</li></ol><p>The main exercise needs Codex and browser access. Python setup is for the instructor’s closing demonstration.</p><p><a href="https://learn.chatgpt.com/docs/browser?surface=app">Browser use guide</a> · <a href="https://learn.chatgpt.com/docs/computer-use?surface=app">Computer Use guide</a></p></section>
+<section class="panel"><h2>2. Give Codex the task</h2><p>Copy the prompt below into your chat. It includes the acceptance criteria and exact inputs.</p><pre>Use the built-in browser at https://flight-lab-ui-workshop.vivianamarquez.chatgpt.site.
+Explicitly set all five fields: ATL to JFK, departing January 22, 2030, returning January 25, 2030, with 2 passengers.
+
+Verify:
+AC-01: A valid search opens results.
+AC-02: The summary matches all five submitted values.
+AC-08: Edit search returns a form containing those same five values.
+
+Submit, compare the results summary, then click Edit search and inspect each control. Report each criterion as passed, failed or blocked, with the specific observed values and screenshots. Leave application code unchanged and do not create a test yet.</pre></section>
+<section class="panel"><h2>3. Review the evidence</h2><p>Check that results show Atlanta (ATL), New York (JFK), 2030-01-22, 2030-01-25 and 2 passengers. Then inspect all five controls after Edit search.</p><p>Compare the report with the screenshots. Passed means observed behavior met the criterion; failed means it did not; blocked means it could not be checked. Open Edit search yourself and compare.</p></section>
+<section class="guide-context"><h2>What is happening?</h2><p>Codex observes the page, interacts with controls and inspects what changed. Screenshots provide visible evidence of those states; the criteria define what correct behavior means. You review the conclusion.</p><p>A teammate could perform and document these steps manually. Codex assists with the interactions and reporting; people still define requirements and review findings.</p></section>
+<section class="guide-context"><h2>Instructor demo: save a reusable test</h2><p>Watch the instructor ask Codex to create a Python Playwright test from the verified journey, review its assertions and run it against this hosted URL. The test needs a local test runtime; it does not need the application’s source code.</p><p>The browser-testing method works across application languages. Python is the language chosen for this demonstration’s saved test.</p></section>
+<section class="guide-context"><h2>Bring it to your work</h2><p>Start with one important journey and clear criteria. Review the evidence, save stable checks as automated tests, then run them after changes. Expand coverage and continuous integration as your team gains confidence.</p></section>
+</main><footer class="wrap site-footer"><nav class="workshop-nav" aria-label="Workshop"><a href="/">Demo</a><span aria-hidden="true">•</span><a href="/workshop" aria-current="page">Guide</a><span aria-hidden="true">•</span><a href="/slides">Slides</a><span aria-hidden="true">•</span><a href="https://www.linkedin.com/in/vivianamarquez/" target="_blank" rel="noopener noreferrer">Instructor</a></nav></footer></body></html>

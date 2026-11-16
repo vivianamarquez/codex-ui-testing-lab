@@ -9,7 +9,7 @@ pytestmark = pytest.mark.browser
 
 
 def test_round_trip_search_preserves_trip_details(page: Page, base_url: str):
-    # The shared server fixture sets DEMO_TODAY to 2030-01-15.
+    # Both the hosted demo and the local server use 2030-01-15 as today.
     page.goto(base_url)
     page.get_by_label("Origin airport", exact=True).select_option("ATL")
     page.get_by_label("Destination airport", exact=True).select_option("JFK")
@@ -19,7 +19,7 @@ def test_round_trip_search_preserves_trip_details(page: Page, base_url: str):
     page.get_by_role("button", name="Search flights", exact=True).press("Enter")
 
     # AC-01: submitting the valid search opens the results page.
-    expect(page).to_have_url(re.compile(r"/results\?"))
+    expect(page).to_have_url(re.compile(r"(?:/results\?|[?&]view=results(?:&|$))"))
     expect(page.get_by_role("heading", name="Your flight results", exact=True)).to_be_visible()
 
     # AC-02: check each value beside its label in the visible search summary.
