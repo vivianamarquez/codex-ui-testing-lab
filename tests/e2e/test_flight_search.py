@@ -1,4 +1,4 @@
-"""The verified search-and-edit journey: AC-01, AC-02, and AC-08."""
+"""Search-and-edit checks: AC-01, AC-02, and AC-08."""
 
 import re
 
@@ -9,7 +9,6 @@ pytestmark = pytest.mark.browser
 
 
 def test_round_trip_search_preserves_trip_details(page: Page, base_url: str):
-    # Both the hosted demo and the local server use 2030-01-15 as today.
     page.goto(base_url)
     page.get_by_label("Origin airport", exact=True).select_option("ATL")
     page.get_by_label("Destination airport", exact=True).select_option("JFK")

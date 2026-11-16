@@ -1,7 +1,7 @@
 [project]
 name = "codex-airline-ui-testing"
 version = "0.1.0"
-description = "Practice UI testing with Codex using a local flight-search app."
+description = "A local flight-search app built with Flask."
 requires-python = ">=3.12"
 dependencies = ["Flask==3.1.3"]
 

@@ -1,4 +1,4 @@
-"""Flight Lab: a small Flask app for practicing UI testing with Codex."""
+"""Flight Lab: a local flight-search app."""
 
 import os
 from dataclasses import dataclass
