@@ -5,31 +5,41 @@ The five search fields are origin, destination, departure date, return date, and
 
 ## Search
 
-- **AC-01:** A valid search opens the results page.
-- **AC-02:** The summary matches all five submitted values. Flight options match the requested route and dates.
+| ID | Expected behavior |
+| --- | --- |
+| **AC-01** | A valid search opens the results page. |
+| **AC-02** | The summary matches all five submitted values. Flight options match the requested route and dates. |
 
 ## Validate
 
 All five fields are required.
 
-- **AC-03:** Origin and destination must be different airports.
-- **AC-04:** Return must be on or after departure. Same-day returns are allowed.
-- **AC-05:** Departure must be today or later.
-- **AC-06:** Accept whole-number passenger counts from **1 to 9**. Reject malformed values such as `1.0`.
-- **AC-07:** Explain invalid inputs and preserve valid values so users can correct the search.
+| ID | Expected behavior |
+| --- | --- |
+| **AC-03** | Origin and destination must be different airports. |
+| **AC-04** | Return must be on or after departure. Same-day returns are allowed. |
+| **AC-05** | Departure must be today or later. |
+| **AC-06** | Accept whole-number passenger counts from **1 to 9**. Reject malformed values such as `1.0`. |
+| **AC-07** | Explain invalid inputs and preserve valid values so users can correct the search. |
 
 ## Edit
 
-- **AC-08:** **Edit search** restores all five submitted values.
+| ID | Expected behavior |
+| --- | --- |
+| **AC-08** | **Edit search** restores all five submitted values. |
 
 ## Empty results
 
-- **AC-09:** Show **“No flights found”**, the correct summary, and **Edit search** when a valid search has no options.
+| ID | Expected behavior |
+| --- | --- |
+| **AC-09** | Show **“No flights found”**, the correct summary, and **Edit search** when a valid search has no options. |
 
 ## Layout
 
-- **UI-01:** On desktop, all fields and **Search flights** are visible and independently usable, with no overlap.
-- **UI-02:** At **390 × 844**, the form, errors, results, and editing work without horizontal scrolling, overlap, or clipped controls. Vertical scrolling is allowed.
+| ID | Expected behavior |
+| --- | --- |
+| **UI-01** | On desktop, all fields and **Search flights** are visible and independently usable, with no overlap. |
+| **UI-02** | At **390 × 844**, the form, errors, results, and editing work without horizontal scrolling, overlap, or clipped controls. Vertical scrolling is allowed. |
 
 <details>
 <summary>Demo data and input details</summary>
