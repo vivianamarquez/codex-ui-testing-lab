@@ -605,3 +605,11 @@ button:hover,.button:hover {
   .workshop .panel { padding: 24px; }
   .workshop pre { padding: 18px; }
 }
+
+/* Supplemental guide material stays compact until needed. */
+.workshop .guide-context h3{margin:24px 0 12px}
+.workshop .guide-context ul{padding-left:24px}
+.workshop .instructor-prompt{margin:20px 0 24px;padding:18px 22px;border:1px solid var(--line);border-radius:12px;background:white}
+.workshop .instructor-prompt summary{cursor:pointer;font-weight:600}
+.workshop .instructor-prompt[open] summary{margin-bottom:18px}
+.workshop .instructor-prompt pre{margin:16px 0}

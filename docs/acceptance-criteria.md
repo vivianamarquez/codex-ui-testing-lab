@@ -1,9 +1,8 @@
 # Acceptance criteria
 
-Practice these three checks with **ATL → JFK, January 22–25, 2030, 2 passengers**.
-Open the [hosted demo](https://flight-lab-ui-workshop.vivianamarquez.chatgpt.site).
-Its effective date is fixed at January 15, 2030. The
-[student prompt](browser-prompt.md) includes these criteria, ready to paste into Codex.
+Test the local Flight Lab at **http://127.0.0.1:5001**. Run it with `DEMO_TODAY=2030-01-15` for these checks. Start with **ATL → JFK, January 22–25, 2030, 2 passengers**.
+The slides contain the live prompts; [browser-prompt.md](browser-prompt.md) is the
+same browser investigation prompt for use from the repo.
 
 | ID | Expected behavior |
 | --- | --- |
@@ -49,9 +48,16 @@ the page, then compare the edited controls with your original input.
 
 For empty-results practice, use **JFK → SFO** with the same dates and 2 passengers.
 
+## Layout criteria
+
+| ID | Expected behavior |
+| --- | --- |
+| UI-01 | On desktop, every form control and Search flights are visible and independently usable; the button must not overlap the passenger control. |
+| UI-02 | At 390 × 844, the form, errors, results, and Edit search fit the viewport without horizontal scrolling or overlapping controls. Vertical scrolling is allowed. |
+
 ## Local Flask implementation
 
-The original local app uses `DEMO_TODAY`, or the UTC date when unset. Start it with
-`DEMO_TODAY=2030-01-15` for these inputs. It validates on the server: valid searches
-return HTTP 200 and invalid searches return HTTP 422. The hosted exercise performs
-validation in the browser; HTTP status checks apply to the local implementation.
+`DEMO_TODAY` fixes the date; without it the app uses the current UTC date.
+Valid searches return HTTP 200; invalid searches return HTTP 422. These server
+checks are separate from browser observations. Record passed, failed, blocked,
+and unattempted checks honestly; a successful HTTP response is not visual proof.

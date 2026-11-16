@@ -1,12 +1,35 @@
+/* OpenAI Sans: public assets from github.com/openai/model_spec/docs/fonts. */
+@font-face {
+  font-family: "OpenAI Sans";
+  src: url("fonts/OpenAISans-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "OpenAI Sans";
+  src: url("fonts/OpenAISans-Semibold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "OpenAI Sans";
+  src: url("fonts/OpenAISans-Bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
 /* Layout, controls, and responsive styles; no build step. */
 :root {
   color-scheme: light;
-  --ink: #183b40;
-  --muted: #52686b;
-  --teal: #12655e;
-  --line: #d7e2dd;
+  --ink: #0d0d0d;
+  --muted: #5d5d5d;
+  --accent: #0d0d0d;
+  --line: #dfdfdf;
   --paper: #fff;
-  --bg: #f3f6f2;
+  --bg: #f9f9f9;
   --error: #9e3030;
 }
 
@@ -18,7 +41,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family: "OpenAI Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   line-height: 1.5;
   font-size: 16px;
 }
@@ -29,16 +52,16 @@ body {
 }
 
 a {
-  color: var(--teal);
+  color: var(--accent);
   text-underline-offset: 4px;
 }
 
 a:hover {
-  color: #093e39;
+  color: #414141;
 }
 
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible {
-  outline: 3px solid #bc671e;
+  outline: 3px solid #0d0d0d;
   outline-offset: 4px;
 }
 
@@ -57,14 +80,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible {
   gap: 10px;
   color: var(--ink);
   font-size: 21px;
-  font-weight: 750;
+  font-weight: 700;
   text-decoration: none;
 }
 
 .brand-mark {
   display: grid;
   place-items: center;
-  background: var(--teal);
+  background: var(--accent);
   color: white;
   width: 34px;
   height: 34px;
@@ -74,7 +97,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible {
 
 .demo-badge {
   font-size: 12px;
-  font-weight: 650;
+  font-weight: 600;
   color: var(--muted);
   border: 1px solid var(--line);
   padding: 6px 12px;
@@ -89,8 +112,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible {
   font-size: 11px;
   letter-spacing: .16em;
   text-transform: uppercase;
-  font-weight: 750;
-  color: var(--teal);
+  font-weight: 700;
+  color: var(--accent);
   margin: 0 0 10px;
 }
 
@@ -125,7 +148,7 @@ h3 {
   border: 1px solid var(--line);
   border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 6px 22px #183b4005;
+  box-shadow: 0 4px 20px #00000003;
 }
 
 .panel-heading {
@@ -137,12 +160,12 @@ h3 {
 }
 
 .pill {
-  background: #edf4ee;
-  color: var(--teal);
+  background: #ededed;
+  color: var(--accent);
   border-radius: 6px;
   padding: 5px 10px;
   font-size: 12px;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .form-grid {
@@ -163,7 +186,7 @@ h3 {
 label {
   display: block;
   font-size: 13px;
-  font-weight: 650;
+  font-weight: 600;
   margin-bottom: 8px;
 }
 
@@ -174,7 +197,7 @@ input,select {
   height: 52px;
   color: var(--ink);
   background: #fff;
-  border: 1px solid #95aaa5;
+  border: 1px solid #afafaf;
   border-radius: 7px;
   padding: 0 12px;
 }
@@ -210,17 +233,17 @@ button,.button {
   gap: 22px;
   border: 0;
   border-radius: 7px;
-  background: var(--teal);
+  background: var(--accent);
   color: white;
   padding: 14px 23px;
   font: inherit;
-  font-weight: 650;
+  font-weight: 600;
   cursor: pointer;
   text-decoration: none;
 }
 
 button:hover,.button:hover {
-  background: #0b4d47;
+  background: #303030;
   color: white;
 }
 
@@ -248,10 +271,11 @@ button:hover,.button:hover {
   flex-shrink: 0;
   width: 23px;
   height: 23px;
-  border: 1px solid #79938b;
+  border: 1px solid #767676;
   border-radius: 50%;
-  text-align: center;
-  font: italic 16px Georgia;
+  display: grid;
+  place-items: center;
+  line-height: 1;
 }
 
 .muted {
@@ -311,13 +335,13 @@ button:hover,.button:hover {
 
 .summary-grid dd {
   margin: 0;
-  font-weight: 650;
+  font-weight: 600;
   font-size: 15px;
 }
 
 .edit-link {
   font-size: 14px;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .options {
@@ -349,7 +373,7 @@ button:hover,.button:hover {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: .09em;
-  color: var(--teal);
+  color: var(--accent);
   margin-bottom: 18px;
 }
 
@@ -387,7 +411,7 @@ button:hover,.button:hover {
 
 .flight-line {
   text-align: center;
-  color: #79938b;
+  color: #767676;
 }
 
 .empty-state {
@@ -408,7 +432,7 @@ button:hover,.button:hover {
 .empty-icon {
   display: block;
   font-size: 36px;
-  color: var(--teal);
+  color: var(--accent);
   margin-bottom: 10px;
 }
 
@@ -514,4 +538,13 @@ button:hover,.button:hover {
   .site-footer {
     font-size: 11px;
   }
+}
+
+
+.form-bottom button {
+  transform: translateY(-74px);
+}
+
+@media (max-width: 480px) {
+  .panel { min-width: 640px; }
 }
