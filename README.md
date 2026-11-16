@@ -27,11 +27,10 @@ These responses do not verify the rendered UI.
 
 ## Branches
 
-- `main`: the starting app, acceptance criteria, and `AGENTS.md`, without tests.
-- `final-result`: the completed exercises, including UI fixes, reusable Playwright
-  tests, and setup instructions.
+- `main`: starting app and acceptance criteria, without tests.
+- `final-result`: completed exercises with UI fixes and Playwright tests.
 
-Switch with `git switch main` or `git switch final-result`, then run `uv sync --locked`.
+Switch branches with `git switch <branch>`, then run `uv sync --locked`.
 
 ## Browser tests
 
