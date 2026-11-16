@@ -1,4 +1,4 @@
-"""Flight Lab: a local flight-search app."""
+"""Flight Search: a local flight-search app."""
 
 import os
 from dataclasses import dataclass

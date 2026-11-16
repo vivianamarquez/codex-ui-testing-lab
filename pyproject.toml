@@ -1,5 +1,5 @@
 [project]
-name = "codex-airline-ui-testing"
+name = "codex-ui-testing-lab"
 version = "0.1.0"
 description = "A local flight-search app built with Flask."
 requires-python = ">=3.12"

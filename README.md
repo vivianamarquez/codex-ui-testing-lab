@@ -1,6 +1,6 @@
-# Flight Lab
+# UI Testing with Codex
 
-A local flight-search app built with Flask.
+Practice UI testing with Codex using **Flight Search**, a local app built with Flask.
 
 ## Run
 
@@ -31,4 +31,4 @@ These responses do not verify the rendered UI.
 
 Switch with `git switch main` or `git switch with-tests`, then run `uv sync --locked`.
 
-[Acceptance criteria](docs/acceptance-criteria.md) · [Codex Site](https://ui-testing-codex-lab.vivianamarquez.chatgpt.site/)
+[Acceptance criteria](docs/acceptance-criteria.md) · [Codex Site](https://codex-ui-testing-lab.vivianamarquez.chatgpt.site/)

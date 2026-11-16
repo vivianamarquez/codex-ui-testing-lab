@@ -1,6 +1,6 @@
 # Acceptance criteria
 
-Flight Lab supports round-trip searches between **ATL, JFK, LAX, and SFO**.
+Flight Search supports round-trip searches between **ATL, JFK, LAX, and SFO**.
 The five search fields are origin, destination, departure date, return date, and passengers.
 
 ## Search

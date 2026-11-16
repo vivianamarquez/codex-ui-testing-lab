@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A local flight-search demo using synthetic schedules.">
-  <title>{% block title %}Flight Search{% endblock %} · Flight Lab</title>
+  <title>{% block title %}Search flights{% endblock %} · Flight Search</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header wrap">
-    <a class="brand" href="{{ url_for('search') }}"><span class="brand-mark" aria-hidden="true">↗</span> Flight Lab</a>
+    <a class="brand" href="{{ url_for('search') }}"><span class="brand-mark" aria-hidden="true">↗</span> Flight Search</a>
   </header>
   <main id="main" class="wrap">{% block content %}{% endblock %}</main>
 </body>

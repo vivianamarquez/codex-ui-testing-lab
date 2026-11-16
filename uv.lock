@@ -21,7 +21,7 @@ wheels = [
 ]
 
 [[package]]
-name = "codex-airline-ui-testing"
+name = "codex-ui-testing-lab"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
