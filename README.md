@@ -6,7 +6,14 @@ UIs written in other languages.
 
 ## Run
 
-With [uv](https://docs.astral.sh/uv/getting-started/installation/) installed:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed:
+
+```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Then start the app:
 
 ```sh
 uv sync --locked

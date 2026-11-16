@@ -113,10 +113,8 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid #0d0
 .annotation-note{position:absolute;left:94px;top:345px;margin:0;font:10px/1.3 Arial,sans-serif;color:#666}.annotation-doc{position:absolute;left:94px;top:365px;font:10px/1.2 Arial,sans-serif;color:#529fab}
 
 /* Local developer workflow: screenshots and concise prompts use one grid. */
-.live-demo-image{position:absolute;left:28px;top:65px;width:664px;height:248px;object-fit:cover;object-position:center 45%;border:.5px solid #d6d6d6;border-radius:10px;box-shadow:0 5px 18px #0001}
-.live-demo-caption{position:absolute;left:28px;top:320px;color:#666;font:10px/1.2 Arial,sans-serif}
-.live-demo-prompt{position:absolute;left:28px;top:345px;font:14px/1.3 Arial,sans-serif}
-.live-demo-link{position:absolute;right:28px;top:320px;font:11px/1.2 Arial,sans-serif;color:#529fab}
+.live-demo-content{position:absolute;left:28px;right:28px;top:58px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.live-demo-image{display:block;width:448px;height:230px;object-fit:contain;object-position:center;border:.5px solid #d6d6d6;border-radius:10px;box-shadow:0 4px 12px #0001}
 .annotation-steps{position:absolute;left:28px;top:78px;width:285px;font:14px/1.5 Arial,sans-serif}.annotation-steps p{margin:0 0 18px}.annotation-steps blockquote{margin:22px 0 15px;padding-left:14px;border-left:3px solid #529fab;font:italic 15px/1.4 Arial,sans-serif}.annotation-steps a{color:#529fab;font-size:11px}
 .annotation-example{position:absolute;left:344px;top:90px;width:348px;height:235px;object-fit:cover;border:.5px solid #ddd;border-radius:10px;box-shadow:0 5px 18px #0001}.annotation-label{position:absolute;left:344px;top:331px;font:10px/1.2 Arial,sans-serif;color:#666}
 .local-slide .qa-matrix{top:84px}.local-slide .qa-matrix th,.local-slide .qa-matrix td{padding:8px}.local-slide .qa-matrix td:nth-child(2){width:31%}
@@ -126,3 +124,24 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid #0d0
 .verify-grid{position:absolute;left:28px;top:75px;width:664px;display:grid;grid-template-columns:167px 167px 1fr;gap:24px}.verify-grid h3{font:700 16px/1.2 Arial,sans-serif;margin:0 0 12px}.verify-grid img{display:block;width:115px;height:215px;object-fit:cover;object-position:top;border:1px solid #ddd;border-radius:7px;box-shadow:0 4px 12px #0001}.verify-grid p{font:12px/1.4 Arial,sans-serif;margin:12px 0}.verify-review p{font-size:15px;margin:0 0 24px}.verify-review small{font:10px/1.4 Arial,sans-serif;color:#666}
 
 .verify-grid img{object-fit:contain;object-position:top;background:#f9f9f9}
+
+/* Slide controls remain available after removing the cross-site footer links. */
+.controls{justify-content:flex-end}
+.cover-presenter a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+@media(max-width:700px){.controls{justify-content:center}.controls .navigation{justify-content:center;width:100%}.controls #slide-select{width:min(65vw,400px)}}
+
+.live-demo-links{display:flex;flex-direction:column;align-items:center;gap:8px;font:12px/1.3 Arial,sans-serif}
+.live-demo-links a{color:#529fab;text-decoration:underline;text-underline-offset:2px}
+
+.live-demo-links button{font:11px/1.3 Arial,sans-serif;padding:5px 12px;border:1px solid #529fab;background:#f5fafb;color:#307d85;border-radius:18px}
+.live-demo-links button:hover{background:#e8f3f4}
+
+.live-demo-secondary{display:flex;justify-content:center;align-items:center;gap:24px;font:10.5px/1.3 Arial,sans-serif}
+
+#dialog-copy{display:block;margin:16px auto 0}
+#copy-status{text-align:center}
+
+#prompt-options{display:flex;justify-content:center;gap:8px;margin:0 0 16px}
+#prompt-options button{font-size:13px;padding:7px 12px}
+#prompt-options button[aria-pressed="true"]{border-color:#529fab;background:#edf6f7;color:#25636a}
+#prompt-help{font-size:13px;color:#555;margin:0 0 12px}

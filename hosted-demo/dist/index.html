@@ -1,83 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Practice UI testing with a flight-search demo and synthetic schedules.">
-  <title>Find your next flight · Flight Lab</title>
-  <link rel="stylesheet" href="/styles.css">
-<script src="/app.js" defer></script>
-<link rel="stylesheet" href="/footer.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="0;url=/slides">
+<title>UI testing with Codex — Slides</title>
+<meta name="description" content="Workshop slides, prompts, and setup links for UI testing with Codex.">
+<link rel="canonical" href="https://ui-testing-codex-lab.vivianamarquez.chatgpt.site/slides">
+<script>location.replace('/slides' + location.hash);</script>
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header wrap">
-    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">↗</span> Flight Lab</a>
-  </header>
-  <main id="main" class="wrap">
-<section class="intro">
-  <p class="eyebrow">A change of scene starts here</p>
-  <h1>Where will you go next?</h1>
-</section>
-<section class="panel" aria-labelledby="search-heading">
-  <div class="panel-heading"><h2 id="search-heading">Find flights</h2><span class="pill">Round trip</span></div>
-  
-  <form action="/" method="get"><input type="hidden" name="view" value="results">
-    <div class="form-grid">
-      
-      <div class="field airport-field">
-        <label for="origin">Origin airport</label>
-        <select id="origin" name="origin" required >
-          
-          <option value="ATL" selected>Atlanta (ATL)</option><option value="JFK" >New York (JFK)</option><option value="LAX" >Los Angeles (LAX)</option><option value="SFO" >San Francisco (SFO)</option>
-        </select>
-        
-      </div>
-      
-      <div class="field airport-field">
-        <label for="destination">Destination airport</label>
-        <select id="destination" name="destination" required >
-          
-          <option value="ATL" >Atlanta (ATL)</option><option value="JFK" selected>New York (JFK)</option><option value="LAX" >Los Angeles (LAX)</option><option value="SFO" >San Francisco (SFO)</option>
-        </select>
-        
-      </div>
-      
-      
-      <div class="field">
-        <label for="departure">Departure date</label>
-        <input id="departure" name="departure" type="date" value="2030-01-22" min="2030-01-15" required >
-        
-      </div>
-      
-      <div class="field">
-        <label for="return_date">Return date</label>
-        <input id="return_date" name="return_date" type="date" value="2030-01-25" min="2030-01-15" required >
-        
-      </div>
-      
-      <div class="field">
-        <label for="passengers">Passengers</label>
-        <select id="passengers" name="passengers" required >
-          
-          <option value="1" selected>1 passenger</option><option value="2" >2 passengers</option><option value="3" >3 passengers</option><option value="4" >4 passengers</option><option value="5" >5 passengers</option><option value="6" >6 passengers</option><option value="7" >7 passengers</option><option value="8" >8 passengers</option><option value="9" >9 passengers</option>
-        </select>
-        
-      </div>
-    </div>
-    <div class="form-bottom"><p>Same-day returns are welcome.<br>Choose from 1–9 passengers.</p><button type="submit">Search flights <span aria-hidden="true">→</span></button></div>
-  </form>
-</section>
-<aside class="demo-note" aria-labelledby="schedule-heading">
-  <div class="note-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="4" r="1"/><rect x="7.25" y="7" width="1.5" height="6" rx=".75"/></svg></div>
-  <div><h2 id="schedule-heading">A small world, ready to explore</h2>
-    <p>Explore Atlanta, New York, Los Angeles, and San Francisco with synthetic schedules.
-      Demo flights run from <time datetime="2030-01-15">2030-01-15</time> through <time datetime="2030-07-14">2030-07-14</time>.
-      New York ↔ San Francisco has no scheduled options.</p>
-    <p class="muted">Effective today: 2030-01-15 · All flight times are UTC.</p>
-  </div>
-</aside>
-</main>
-  <footer class="wrap site-footer"><nav class="workshop-nav" aria-label="Workshop"><a href="/" aria-current="page">Demo</a><span aria-hidden="true">•</span><a href="/slides">Slides</a><span aria-hidden="true">•</span><a href="https://www.linkedin.com/in/vivianamarquez/" target="_blank" rel="noopener noreferrer">Instructor</a></nav></footer>
-</body>
+<body><p>Open the <a href="/slides">UI testing with Codex slides</a>.</p></body>
 </html>
