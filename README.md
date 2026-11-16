@@ -1,6 +1,7 @@
 # UI Testing with Codex
 
-Practice UI testing with Codex using **Flight Search**, a local app built with Flask.
+Find bugs, verify fixes, and automate UI tests with Codex using **Flight Search**,
+a local app built with Flask.
 
 ## Run
 
@@ -26,8 +27,8 @@ These responses do not verify the rendered UI.
 
 ## Branches
 
-- `main`: the app and acceptance criteria, without tests or agent instructions.
-- `with-tests`: the same app with Python tests, Playwright, and `AGENTS.md`.
+- `main`: the app, acceptance criteria, and `AGENTS.md`, without tests.
+- `with-tests`: the same foundation with Python tests and Playwright dependencies.
 
 Switch with `git switch main` or `git switch with-tests`, then run `uv sync --locked`.
 
