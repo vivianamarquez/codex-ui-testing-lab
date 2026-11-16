@@ -1,8 +1,6 @@
 # Acceptance criteria
 
 Test the local Flight Lab at **http://127.0.0.1:5001**. Run it with `DEMO_TODAY=2030-01-15` for these checks. Start with **ATL → JFK, January 22–25, 2030, 2 passengers**.
-The slides contain the live prompts; [browser-prompt.md](browser-prompt.md) is the
-same browser investigation prompt for use from the repo.
 
 | ID | Expected behavior |
 | --- | --- |
@@ -46,7 +44,7 @@ the page, then compare the edited controls with your original input.
 - Each option's outbound and return legs match the requested route and dates.
   Times are UTC; a same-day return departs after the outbound arrival.
 
-For empty-results practice, use **JFK → SFO** with the same dates and 2 passengers.
+For an empty-results example, use **JFK → SFO** with the same dates and 2 passengers.
 
 ## Layout criteria
 
