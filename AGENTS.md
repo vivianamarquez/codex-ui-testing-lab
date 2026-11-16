@@ -3,8 +3,10 @@
 - App: `app.py`; UI: `templates/` and `static/`.
 - Setup: `uv sync --locked`.
 - Run: `DEMO_TODAY=2030-01-15 uv run flask --app app run --debug --port 5001`.
-- Browser runtime: `uv run playwright install chromium`.
-- Tests: `uv run pytest`.
+
+`main` starts without tests or test dependencies. Once pytest-playwright and a test
+suite have been added, install Chromium with `uv run playwright install chromium`
+and run the tests with `uv run pytest`.
 
 Use `docs/acceptance-criteria.md` for expected behavior. Keep changes focused and
 preserve unrelated work. Do not weaken criteria or assertions to make checks pass.
