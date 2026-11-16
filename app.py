@@ -166,8 +166,7 @@ def create_app(test_config=None):
                                    **page_context(today)), 422
         return render_template(
             "results.html", trip=trip, options=flight_options(trip, today),
-            edit_url=url_for("search", **{key: value for key, value in trip.parameters().items()
-                                         if key != "passengers"}), **page_context(today),
+            edit_url=url_for("search", **trip.parameters()), **page_context(today),
         )
 
     return app
