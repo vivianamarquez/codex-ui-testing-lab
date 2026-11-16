@@ -31,4 +31,4 @@ These responses do not verify the rendered UI.
 
 Switch with `git switch main` or `git switch with-tests`, then run `uv sync --locked`.
 
-[Acceptance criteria](docs/acceptance-criteria.md) · [Codex Site](https://codex-ui-testing-lab.vivianamarquez.chatgpt.site/)
+[Acceptance criteria](docs/acceptance-criteria.md) · [Codex Site (slides)](https://codex-ui-testing-lab.vivianamarquez.chatgpt.site/)
