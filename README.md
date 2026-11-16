@@ -27,9 +27,9 @@ These responses do not verify the rendered UI.
 
 ## Branches
 
-- `main`: the app, acceptance criteria, and `AGENTS.md`, without tests.
-- `with-tests`: the same foundation with Python tests and Playwright dependencies.
+- `main`: starting app and acceptance criteria, without tests.
+- `final-result`: completed exercises with UI fixes and Playwright tests.
 
-Switch with `git switch main` or `git switch with-tests`, then run `uv sync --locked`.
+Switch branches with `git switch <branch>`, then run `uv sync --locked`.
 
 [Acceptance criteria](docs/acceptance-criteria.md) · [Codex Site (slides)](https://codex-ui-testing-lab.vivianamarquez.chatgpt.site/)
